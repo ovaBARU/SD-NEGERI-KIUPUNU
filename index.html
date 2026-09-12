@@ -9,23 +9,51 @@
 <body>
 <div class="app">
 <aside class="sidebar">
-  <div class="brand"><div class="logo">K</div><div><b>SI-SISWA</b><small>SD Negeri Kiupunu</small></div></div>
-  <button class="nav active" data-view="dashboard">⌂ <span>Dashboard</span></button>
-  <button class="nav" data-view="data">▦ <span>Data Peserta Didik</span></button>
-  <button class="nav" data-view="import">⇧ <span>Import Excel</span></button>
-  <button class="nav" data-view="about">ⓘ <span>Tentang Aplikasi</span></button>
-  <div class="side-note">Versi 1.0<br>Data tersimpan lokal di browser.</div>
+  <div class="brand"><div class="logo">K</div><div class="brand-text"><b>SI-SISWA</b><small>SD Negeri Kiupunu</small></div></div>
+  <div class="menu-label">MENU UTAMA</div>
+  <button class="nav active" data-view="dashboard"><span class="nav-icon">⌂</span><span>Dashboard</span></button>
+  <button class="nav" data-view="data"><span class="nav-icon">▦</span><span>Data Peserta Didik</span></button>
+  <button class="nav" data-view="import"><span class="nav-icon">⇧</span><span>Import Excel</span></button>
+  <div class="menu-label">LAINNYA</div>
+  <button class="nav" data-view="about"><span class="nav-icon">ⓘ</span><span>Tentang Aplikasi</span></button>
+  <div class="side-note"><span class="status-dot"></span> Sistem siap digunakan<br><small>Versi 2.0 • Online-ready</small></div>
 </aside>
 <main class="main">
-<header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Kelola data peserta didik dengan mudah.</p></div><div><button class="btn primary" id="importTop">＋ Import Excel</button></div></header>
+<header class="topbar">
+  <div class="top-title"><div class="mobile-logo">K</div><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Ringkasan data peserta didik SD Negeri Kiupunu.</p></div></div>
+  <div class="top-actions"><span class="data-status">● Data lokal</span><button class="btn primary" id="importTop">＋ Import Excel</button></div>
+</header>
 <section id="dashboard" class="view">
-  <div class="hero"><div><span class="eyebrow">APLIKASI DATA PESERTA DIDIK</span><h2>Selamat datang 👋</h2><p>Import file Excel sekolah, lihat data siswa, cari, filter, dan buka detail setiap peserta didik.</p></div><div class="hero-icon">🎓</div></div>
-  <div class="cards"><div class="card"><span>Total Siswa</span><b id="total">0</b><small>data tersimpan</small></div><div class="card"><span>Laki-laki</span><b id="male">0</b><small>jenis kelamin L</small></div><div class="card"><span>Perempuan</span><b id="female">0</b><small>jenis kelamin P</small></div><div class="card"><span>Rombel</span><b id="rombelCount">0</b><small>kelas/rombongan belajar</small></div></div>
-  <div class="panel"><div class="panel-head"><div><h3>Jumlah Siswa per Rombel</h3><p>Ringkasan berdasarkan kolom “Rombel Saat Ini”.</p></div></div><div id="classChart" class="chart empty">Belum ada data. Silakan import Excel.</div></div>
+  <div class="welcome-row">
+    <div><span class="eyebrow">SISTEM INFORMASI PESERTA DIDIK</span><h2>Selamat datang di SI-SISWA 👋</h2><p>Pantau data peserta didik, rombel, dan statistik sekolah dalam satu dashboard.</p></div>
+    <div class="school-badge"><div class="school-icon">🏫</div><div><b>SD Negeri Kiupunu</b><span>Data Peserta Didik</span></div></div>
+  </div>
+
+  <div class="section-title"><div><h3>Ringkasan Data</h3><p>Informasi utama peserta didik yang tersimpan.</p></div><span id="lastUpdate">Belum ada data</span></div>
+  <div class="cards">
+    <div class="stat-card"><div class="stat-icon blue">👨‍🎓</div><div><span>Total Siswa</span><b id="total">0</b><small>Peserta didik</small></div></div>
+    <div class="stat-card"><div class="stat-icon green">♂</div><div><span>Laki-laki</span><b id="male">0</b><small id="malePct">0% dari total</small></div></div>
+    <div class="stat-card"><div class="stat-icon pink">♀</div><div><span>Perempuan</span><b id="female">0</b><small id="femalePct">0% dari total</small></div></div>
+    <div class="stat-card"><div class="stat-icon orange">▦</div><div><span>Rombel</span><b id="rombelCount">0</b><small>Kelas aktif</small></div></div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="panel chart-panel"><div class="panel-head"><div><h3>Siswa per Rombel</h3><p>Distribusi jumlah peserta didik berdasarkan rombel.</p></div><span class="panel-tag">STATISTIK</span></div><div id="classChart" class="chart empty">Belum ada data. Silakan import Excel.</div></div>
+    <div class="panel quick-panel"><div class="panel-head"><div><h3>Aksi Cepat</h3><p>Akses fitur yang sering digunakan.</p></div></div>
+      <button class="quick-action" id="quickData"><span>👨‍🎓</span><div><b>Lihat Data Siswa</b><small>Kelola dan cari peserta didik</small></div><i>›</i></button>
+      <button class="quick-action" id="quickImport"><span>📥</span><div><b>Import Data Excel</b><small>Tambahkan data dari Excel</small></div><i>›</i></button>
+      <button class="quick-action" id="quickExport"><span>📤</span><div><b>Export Data</b><small>Unduh data peserta didik</small></div><i>›</i></button>
+    </div>
+  </div>
+
+  <div class="panel class-panel"><div class="panel-head"><div><h3>Daftar Rombel</h3><p>Ringkasan jumlah siswa setiap kelas.</p></div><button class="text-btn" id="viewDataBtn">Lihat semua data →</button></div><div id="classCards" class="class-cards"><div class="empty-card">Belum ada data rombel.</div></div></div>
 </section>
-<section id="data" class="view hidden"><div class="panel"><div class="toolbar"><input id="search" class="search" placeholder="🔎 Cari nama, NISN, NIPD, NIK..."><select id="classFilter"><option value="">Semua Rombel</option></select><button class="btn secondary" id="exportBtn">⇩ Export Excel</button></div><div class="table-wrap"><table><thead><tr><th>No</th><th>Nama</th><th>NIPD</th><th>NISN</th><th>JK</th><th>Rombel</th><th>Aksi</th></tr></thead><tbody id="tbody"></tbody></table></div><div class="pagination"><span id="countInfo">0 data</span><div><button class="pagebtn" id="prev">‹</button><button class="pagebtn" id="next">›</button></div></div></div></section>
-<section id="import" class="view hidden"><div class="panel import-panel"><div class="dropzone" id="dropzone"><div class="upload-icon">⇧</div><h2>Import data siswa dari Excel</h2><p>Gunakan file <b>.xlsx</b> atau <b>.xls</b> seperti file Daftar Peserta Didik yang Anda berikan.</p><button class="btn primary" id="chooseBtn">Pilih File Excel</button><input type="file" id="fileInput" accept=".xlsx,.xls" hidden><small>Format yang disesuaikan: sheet “Daftar Peserta Didik”, header utama baris 5, subheader baris 6, data mulai baris 7.</small></div><div id="preview"></div></div></section>
-<section id="about" class="view hidden"><div class="panel about"><h2>SI-SISWA Versi 1</h2><p>Aplikasi sederhana untuk membaca data peserta didik dari Excel dan menampilkannya dalam web.</p><div class="feature-grid"><div><b>Import Excel</b><span>Membaca file XLS/XLSX langsung di browser.</span></div><div><b>Pencarian</b><span>Cari berdasarkan nama, NISN, NIPD, atau NIK.</span></div><div><b>Filter Rombel</b><span>Menampilkan siswa berdasarkan kelas/rombel.</span></div><div><b>Detail Siswa</b><span>Melihat seluruh kolom data siswa.</span></div><div><b>Export</b><span>Mengunduh data yang tersimpan kembali sebagai Excel.</span></div><div><b>Privasi Lokal</b><span>Data versi 1 disimpan di browser perangkat ini.</span></div></div><div class="warning">Catatan: versi 1 belum menggunakan database online. Jika digunakan oleh beberapa guru/operator dari perangkat berbeda, versi berikutnya sebaiknya ditambah login dan database.</div></div></section>
+
+<section id="data" class="view hidden"><div class="section-title"><div><h2>Data Peserta Didik</h2><p>Cari, filter, dan lihat detail seluruh siswa.</p></div></div><div class="panel"><div class="toolbar"><input id="search" class="search" placeholder="🔎  Cari nama, NISN, NIPD, NIK..." aria-label="Cari siswa"><select id="classFilter"><option value="">Semua Rombel</option></select><button class="btn secondary" id="exportBtn">⇩ Export Excel</button></div><div class="table-wrap"><table><thead><tr><th>No</th><th>Nama</th><th>NIPD</th><th>NISN</th><th>JK</th><th>Rombel</th><th>Aksi</th></tr></thead><tbody id="tbody"></tbody></table></div><div class="pagination"><span id="countInfo">0 data</span><div><button class="pagebtn" id="prev">‹</button><button class="pagebtn" id="next">›</button></div></div></div></section>
+
+<section id="import" class="view hidden"><div class="section-title"><div><h2>Import Data Excel</h2><p>Masukkan data peserta didik dari file Excel sekolah.</p></div></div><div class="panel import-panel"><div class="dropzone" id="dropzone"><div class="upload-icon">⇧</div><h2>Import data siswa dari Excel</h2><p>Gunakan file <b>.xlsx</b> atau <b>.xls</b> seperti file Daftar Peserta Didik.</p><button class="btn primary" id="chooseBtn">Pilih File Excel</button><input type="file" id="fileInput" accept=".xlsx,.xls" hidden><small>Format yang disesuaikan: sheet “Daftar Peserta Didik”, header utama baris 5, subheader baris 6, data mulai baris 7.</small></div><div id="preview"></div></div></section>
+
+<section id="about" class="view hidden"><div class="section-title"><div><h2>Tentang Aplikasi</h2><p>Informasi fitur dan kesiapan sistem.</p></div></div><div class="panel about"><h2>SI-SISWA <span class="version-pill">Versi 2.0</span></h2><p>Aplikasi pengelolaan data peserta didik untuk SD Negeri Kiupunu dengan dashboard yang lebih informatif dan siap dikembangkan menjadi sistem online multi-perangkat.</p><div class="feature-grid"><div><b>Dashboard Profesional</b><span>Statistik, distribusi rombel, dan aksi cepat.</span></div><div><b>Import Excel</b><span>Membaca file XLS/XLSX langsung dari browser.</span></div><div><b>Pencarian</b><span>Cari berdasarkan nama, NISN, NIPD, atau NIK.</span></div><div><b>Filter Rombel</b><span>Menampilkan siswa berdasarkan kelas.</span></div><div><b>Detail Siswa</b><span>Melihat seluruh kolom data siswa.</span></div><div><b>Export</b><span>Mengunduh kembali data peserta didik sebagai Excel.</span></div></div><div class="info-note"><b>Rencana tahap berikutnya:</b> login Admin/Guru dan database online agar data dapat diakses dari beberapa perangkat.</div></div></section>
 </main></div>
 <div class="modal hidden" id="modal"><div class="modal-box"><button class="close" id="closeModal">×</button><div id="detail"></div></div></div><div class="toast" id="toast"></div>
 <script src="app.js"></script>

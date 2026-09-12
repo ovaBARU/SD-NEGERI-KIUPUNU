@@ -1,29 +1,18 @@
-# SI-SISWA — SD Negeri Kiupunu — Versi 1
+# SI-SISWA — SD Negeri Kiupunu v2.0
 
-Aplikasi web statis untuk mengimpor data peserta didik dari Excel dan menampilkannya di browser.
+Dashboard data peserta didik yang lebih profesional, responsif, dan disiapkan untuk dikembangkan menjadi aplikasi online multi-perangkat.
 
-## Disesuaikan dengan file Anda
-- Sheet: `Daftar Peserta Didik`
-- Header utama: baris ke-5
-- Subheader Data Ayah/Ibu/Wali: baris ke-6
-- Data siswa: mulai baris ke-7
-- Struktur: 66 kolom sesuai file sumber
+## Fitur v2.0
+- Dashboard statistik total siswa, laki-laki, perempuan, dan rombel
+- Grafik siswa per rombel
+- Kartu ringkasan setiap rombel
+- Aksi cepat
+- Import XLS/XLSX
+- Pencarian dan filter rombel
+- Detail siswa
+- Export Excel
+- Responsif untuk laptop dan HP
+- Penyimpanan lokal sementara
 
-## Fitur
-- Dashboard statistik
-- Import `.xlsx` / `.xls`
-- Drag & drop Excel
-- Preview hasil import
-- Tabel siswa
-- Pencarian Nama/NISN/NIPD/NIK
-- Filter Rombel
-- Detail seluruh kolom siswa
-- Export ke Excel
-- LocalStorage browser
-- Responsif untuk komputer/tablet/HP
-
-## Menjalankan
-Buka `index.html` dengan Chrome/Edge. Untuk GitHub Pages, upload ketiga file utama (`index.html`, `style.css`, `app.js`) ke repository lalu aktifkan Pages.
-
-## Catatan
-Versi 1 memakai SheetJS dari CDN, sehingga saat pertama dibuka membutuhkan internet untuk memuat library Excel. Data siswa tidak dikirim ke server oleh aplikasi ini; data yang diimpor disimpan di browser menggunakan LocalStorage.
+## Tahap berikutnya
+Versi berikutnya dapat menambahkan login Admin/Guru dan database online (misalnya Supabase) sehingga data sekolah dapat diakses dari beberapa perangkat.
