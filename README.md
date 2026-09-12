@@ -17,3 +17,13 @@ Identitas Sekolah, Kepala Sekolah, Data Guru, Tenaga Kependidikan, Sarana Prasar
 
 ## Menjalankan
 Buka `index.html` di browser. Untuk penggunaan online, deploy folder ini ke hosting statis.
+
+
+## Ubah Password Admin
+Setelah login sebagai Admin, tombol `🔑 Ubah Password` tersedia di bagian atas.
+- Password lama harus benar.
+- Password baru minimal 6 karakter.
+- Password baru disimpan di browser perangkat tersebut.
+- Login awal: username `admin`, password `admin123`.
+
+> Untuk versi online produksi, autentikasi sebaiknya dipindahkan ke backend/database agar password tidak disimpan di browser.

@@ -16,3 +16,5 @@
 .login-box .field-input input{width:100%;box-sizing:border-box}
 .btn.full{width:100%;justify-content:center}
 .login-note{text-align:center;font-size:12px;color:#667085;margin:14px 0 0}
+
+#passwordModal .login-box{max-width:430px}

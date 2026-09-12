@@ -1,4 +1,4 @@
-const KEY='kiupunu_school_v3';const ADMIN_SESSION='kiupunu_admin_session';const ADMIN_USER='admin';const ADMIN_PASS='admin123';let isAdmin=sessionStorage.getItem(ADMIN_SESSION)==='1';const state={headers:[],rows:[],filtered:[],page:1,pageSize:15,school:{},principal:{},teachers:[],staff:[],facilities:[]};const $=id=>document.getElementById(id),norm=s=>String(s??'').trim().toLowerCase(),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const KEY='kiupunu_school_v3';const ADMIN_SESSION='kiupunu_admin_session';const ADMIN_USER_KEY='kiupunu_admin_user';const ADMIN_PASS_KEY='kiupunu_admin_pass';const ADMIN_USER_DEFAULT='admin';const ADMIN_PASS_DEFAULT='admin123';let isAdmin=sessionStorage.getItem(ADMIN_SESSION)==='1';const state={headers:[],rows:[],filtered:[],page:1,pageSize:15,school:{},principal:{},teachers:[],staff:[],facilities:[]};const $=id=>document.getElementById(id),norm=s=>String(s??'').trim().toLowerCase(),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const schoolFields=[['nama','Nama Sekolah'],['npsn','NPSN'],['nss','NSS/NIS'],['jenjang','Jenjang'],['status','Status Sekolah'],['akreditasi','Akreditasi'],['alamat','Alamat'],['desa','Desa/Kelurahan'],['kecamatan','Kecamatan'],['kabupaten','Kabupaten/Kota'],['provinsi','Provinsi'],['kodepos','Kode Pos'],['telepon','Telepon'],['email','Email'],['website','Website'],['kurikulum','Kurikulum'],['tahunBerdiri','Tahun Berdiri'],['kodeSekolah','Kode Sekolah'],['rekening','Nomor Rekening Sekolah']];const principalFields=[['nama','Nama Kepala Sekolah'],['nip','NIP'],['nuptk','NUPTK'],['pangkat','Pangkat/Golongan'],['pendidikan','Pendidikan Terakhir'],['tmt','TMT Kepala Sekolah'],['periode','Periode Tugas'],['telepon','No. Telepon'],['email','Email']];
 function toast(m){$('toast').textContent=m;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2300)}function saveAll(){localStorage.setItem(KEY,JSON.stringify(state))}function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');Object.assign(state,x);state.school??={};state.principal??={};state.teachers??=[];state.staff??=[];state.facilities??=[];state.headers??=[];state.rows??=[]}catch(e){}renderAll()}
 function findHeader(q){return state.headers.find(h=>norm(h).includes(norm(q)))||''}function getGroups(){const rb=findHeader('Rombel Saat Ini'),g={};state.rows.forEach(r=>{const k=String(r[rb]||'Tidak diisi').trim()||'Tidak diisi';g[k]=(g[k]||0)+1});return Object.entries(g).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true}))}
@@ -24,6 +24,22 @@ function editFacility(i){if(!requireAdmin())return;const x=state.facilities[i],f
 function readExcel(file){if(!requireAdmin())return;const fr=new FileReader();fr.onload=e=>{try{const wb=XLSX.read(e.target.result,{type:'array',cellDates:true});const ws=wb.Sheets['Daftar Peserta Didik']||wb.Sheets[wb.SheetNames[0]],aoa=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false});if(aoa.length<7)throw Error('Format file tidak sesuai.');const top=aoa[4]||[],sub=aoa[5]||[];state.headers=top.map((v,i)=>{const a=String(v||'').trim(),b=String(sub[i]||'').trim();return a&&b?`${a} - ${b}`:(a||b||`Kolom ${i+1}`)});state.rows=aoa.slice(6).filter(r=>String(r[0]??'').trim()!=='').map(r=>Object.fromEntries(state.headers.map((h,i)=>[h,r[i]??''])));state.page=1;saveAll();renderAll();$('preview').innerHTML=`<div class="preview"><h3>Hasil Import</h3><p><b>${state.rows.length}</b> siswa terbaca.</p></div>`;toast(`Berhasil mengimpor ${state.rows.length} data siswa.`);showView('data')}catch(err){toast('Gagal membaca Excel: '+err.message)}};fr.readAsArrayBuffer(file)}
 function exportExcel(){if(!state.rows.length)return toast('Belum ada data siswa.');const aoa=[state.headers,...state.rows.map(r=>state.headers.map(h=>r[h]??''))],ws=XLSX.utils.aoa_to_sheet(aoa),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Data Siswa');XLSX.writeFile(wb,'Data_Siswa_SD_Negeri_Kiupunu.xlsx')}
 
+
+function getAdminUser(){return localStorage.getItem(ADMIN_USER_KEY)||ADMIN_USER_DEFAULT}
+function getAdminPass(){return localStorage.getItem(ADMIN_PASS_KEY)||ADMIN_PASS_DEFAULT}
+function changeAdminPassword(){
+if(!requireAdmin())return;
+const current=$('currentAdminPass').value,newp=$('newAdminPass').value,confirm=$('confirmAdminPass').value;
+if(current!==getAdminPass()){toast('Password lama salah.');return}
+if(newp.length<6){toast('Password baru minimal 6 karakter.');return}
+if(newp!==confirm){toast('Konfirmasi password tidak sama.');return}
+localStorage.setItem(ADMIN_PASS_KEY,newp);
+$('passwordModal').classList.add('hidden');
+$('currentAdminPass').value='';$('newAdminPass').value='';$('confirmAdminPass').value='';
+toast('Password Admin berhasil diubah.');
+}
+function openPasswordModal(){if(requireAdmin())$('passwordModal').classList.remove('hidden')}
+function closePasswordModal(){$('passwordModal').classList.add('hidden')}
 function updateAccessUI(){
 document.querySelectorAll('.admin-only').forEach(e=>e.classList.toggle('hidden',!isAdmin));
 $('adminLoginBtn').classList.toggle('hidden',isAdmin);
@@ -42,7 +58,7 @@ function openAdminLogin(){$('loginModal').classList.remove('hidden');$('adminUse
 function closeAdminLogin(){$('loginModal').classList.add('hidden');$('adminUser').value='';$('adminPass').value=''}
 function doLogin(){
 const u=$('adminUser').value.trim(),p=$('adminPass').value;
-if(u===ADMIN_USER && p===ADMIN_PASS){
+if(u===getAdminUser() && p===getAdminPass()){
 isAdmin=true;sessionStorage.setItem(ADMIN_SESSION,'1');closeAdminLogin();updateAccessUI();renderAll();toast('Login Admin berhasil.');
 }else{toast('Username atau password Admin salah.')}
 }
@@ -76,6 +92,10 @@ $('addStaff').onclick=()=>{if(requireAdmin())addPerson('staff')};
 $('addFacility').onclick=()=>{if(requireAdmin())addFacility()};
 $('chooseBtn').onclick=()=>{if(requireAdmin())$('fileInput').click()};$('fileInput').onchange=e=>{if(e.target.files[0])readExcel(e.target.files[0]);e.target.value=''};$('search').oninput=()=>{state.page=1;renderData()};$('classFilter').onchange=()=>{state.page=1;renderData()};$('exportBtn').onclick=exportExcel;$('prev').onclick=()=>{if(state.page>1){state.page--;renderData()}};$('next').onclick=()=>{state.page++;renderData()};$('closeModal').onclick=()=>$('modal').classList.add('hidden');$('modal').onclick=e=>{if(e.target===$('modal'))$('modal').classList.add('hidden')};const dz=$('dropzone');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag')}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag')}));dz.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)readExcel(f)});$('adminLoginBtn').onclick=openAdminLogin;
 $('adminLogoutBtn').onclick=doLogout;
+$('changePasswordBtn').onclick=openPasswordModal;
+$('saveAdminPassword').onclick=changeAdminPassword;
+$('closePassword').onclick=closePasswordModal;
+$('passwordModal').onclick=e=>{if(e.target===$('passwordModal'))closePasswordModal()};
 $('doAdminLogin').onclick=doLogin;
 $('closeLogin').onclick=closeAdminLogin;
 $('loginModal').onclick=e=>{if(e.target===$('loginModal'))closeAdminLogin()};
