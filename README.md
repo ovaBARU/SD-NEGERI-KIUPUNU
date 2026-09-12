@@ -1,18 +1,19 @@
-# SI-SISWA — SD Negeri Kiupunu v2.0
+# SI-SISWA v4.0 — Publik + Admin
 
-Dashboard data peserta didik yang lebih profesional, responsif, dan disiapkan untuk dikembangkan menjadi aplikasi online multi-perangkat.
+## Hak akses
+- Publik: dapat melihat seluruh modul/data dan Export Semua Data.
+- Admin: login untuk Import Excel serta tambah/edit/hapus data.
+- Mode Admin berlaku selama tab browser aktif.
 
-## Fitur v2.0
-- Dashboard statistik total siswa, laki-laki, perempuan, dan rombel
-- Grafik siswa per rombel
-- Kartu ringkasan setiap rombel
-- Aksi cepat
-- Import XLS/XLSX
-- Pencarian dan filter rombel
-- Detail siswa
-- Export Excel
-- Responsif untuk laptop dan HP
-- Penyimpanan lokal sementara
+## Login demo
+- Username: `admin`
+- Password: `admin123`
 
-## Tahap berikutnya
-Versi berikutnya dapat menambahkan login Admin/Guru dan database online (misalnya Supabase) sehingga data sekolah dapat diakses dari beberapa perangkat.
+> Catatan keamanan: login ini adalah proteksi sisi browser untuk versi prototipe/local. Untuk deployment online multi-perangkat yang benar-benar aman, autentikasi dan database harus dipindahkan ke backend (misalnya Supabase). Jangan memakai password demo ini untuk data produksi.
+
+## Export
+Tombol `Export Semua Data` membuat satu file Excel dengan sheet:
+Identitas Sekolah, Kepala Sekolah, Data Guru, Tenaga Kependidikan, Sarana Prasarana, dan Data Siswa.
+
+## Menjalankan
+Buka `index.html` di browser. Untuk penggunaan online, deploy folder ini ke hosting statis.
